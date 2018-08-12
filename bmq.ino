@@ -4,13 +4,13 @@
 #include <stdlib.h>                                     //2.4g的库
 #include <Wire.h>                                
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>                           //显示屏的库
-//#include "Suanfa.h"                                    //算法的库.
+#include <Adafruit_SSD1306.h>                           //显示屏的库56
+#include "Suanfa.h"                                    //算法的库.
 #define   OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);                   //初始化显示屏
-//Suanfa ad;                                            //创建一个对象
-const int X_dir = 10;
-const int Y_dir = 6;
+Suanfa ad;                                            //创建一个对象
+const int X_dir = 9;
+const int Y_dir = 10;
 double X_juli, Y_juli;
 const byte X_interruptPin = 2;
 const byte Y_interruptpin = 3;
@@ -45,14 +45,14 @@ void setup()
 void loop()
 {
   angle();
- // attachInterrupt(digitalPinToInterrupt(X_interruptPin), xblink, FALLING );
- // attachInterrupt(digitalPinToInterrupt(Y_interruptpin), yblink, FALLING );//编码器中断，计数
+  attachInterrupt(digitalPinToInterrupt(X_interruptPin), xblink, FALLING );
+  attachInterrupt(digitalPinToInterrupt(Y_interruptpin), yblink, FALLING );//编码器中断，计数
   X_juli = 1.0 * X / 256 * 119.73;
   Y_juli = 1.0 * Y / 256 * 119.73;                                        
-  //ad.realXY(X_juli,Y_juli,p1);
-  data[0] = X_juli;
-  data[1] = Y_juli;
-  data[2] = p1;
+  ad.realXY(X_juli,Y_juli,p1);
+  data[0] = ad.x;
+  data[1] = ad.y;
+  data[2] = ad.p;
   Mirf.send((byte *)&data);
   while(Mirf.isSending())
 
@@ -116,13 +116,13 @@ void angle()
       YPR[2]=(Re_buf[4]<<8|Re_buf[5])/100;
     }
   
-   /*if(!flag)
+   if(!flag)
     {
       p0 = YPR[0];
      }
-     flag = true ;  */
+     flag = true ;  
      p1 = YPR[0];
-   //ad.tozero(p1,p0);
+   ad.tozero(p1,p0);
   }
 }
 void view(double x,double y,double p)
