@@ -29,7 +29,12 @@ void setup()
   pinMode(X_dir, INPUT_PULLUP);                    
   pinMode(X_interruptPin, INPUT_PULLUP);
   pinMode(Y_dir, INPUT_PULLUP);
-  pinMode(Y_interruptpin, INPUT_PULLUP);                  //中断引脚初始化             
+  pinMode(Y_interruptpin, INPUT_PULLUP);                  //中断引脚初始化  
+  pinMode(7, INPUT_PULLUP);      
+  pinMode(8, INPUT_PULLUP); 
+  pinMode(11, INPUT_PULLUP); 
+  pinMode(12, INPUT_PULLUP); 
+  pinMode(13, INPUT_PULLUP);  
   Serial.begin(115200);
   delay(2000);
   Serial.write(0XA5); 
@@ -40,9 +45,8 @@ void setup()
 void loop()
 {
   angle();
-  Serial.println("156");
-  attachInterrupt(digitalPinToInterrupt(X_interruptPin), xblink, FALLING );
-  attachInterrupt(digitalPinToInterrupt(Y_interruptpin), yblink, FALLING );//编码器中断，计数
+ // attachInterrupt(digitalPinToInterrupt(X_interruptPin), xblink, FALLING );
+ // attachInterrupt(digitalPinToInterrupt(Y_interruptpin), yblink, FALLING );//编码器中断，计数
   X_juli = 1.0 * X / 256 * 119.73;
   Y_juli = 1.0 * Y / 256 * 119.73;                                        
   //ad.realXY(X_juli,Y_juli,p1);
@@ -51,7 +55,7 @@ void loop()
   data[2] = p1;
   Mirf.send((byte *)&data);
   while(Mirf.isSending())
-  
+
   Serial.print(data[0]);                 //串口显示
   Serial.print("   ");                   //串口显示
   Serial.print(data[1]);                 //串口显示
