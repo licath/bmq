@@ -37,7 +37,7 @@ void setup()
   Serial.begin(115200);                                 //初始化GY953,连续输出模式
 }
 void loop()
-{
+{//fgfgfgf
   angle();
   attachInterrupt(digitalPinToInterrupt(X_interruptPin), xblink, FALLING );
   attachInterrupt(digitalPinToInterrupt(Y_interruptpin), yblink, FALLING );//编码器中断，计数
